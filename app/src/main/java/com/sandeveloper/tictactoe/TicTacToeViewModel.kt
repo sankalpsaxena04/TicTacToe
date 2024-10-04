@@ -23,16 +23,17 @@ class TicTacToeViewModel @Inject constructor(
 
     val state = client
         .getGameStateStream()
-        .onStart { _isConnecting.value = true }
-        .onEach { _isConnecting.value = false }
+        .onStart { _isConnecting.value = 1 }
+        .onEach { _isConnecting.value = 0 }
         .catch { t -> _showConnectionError.value = t is ConnectException }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), GameState())
 
-    private val _isConnecting = MutableStateFlow(false)
+     private val _isConnecting = MutableStateFlow(0)
     val isConnecting = _isConnecting.asStateFlow()
 
     private val _showConnectionError = MutableStateFlow(false)
     val showConnectionError = _showConnectionError.asStateFlow()
+
 
     fun finishTurn(x: Int, y: Int) {
         if(state.value.field[y][x] != null || state.value.winningPlayer != null) {

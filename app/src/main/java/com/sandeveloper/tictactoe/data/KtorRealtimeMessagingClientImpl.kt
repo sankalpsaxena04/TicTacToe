@@ -25,7 +25,12 @@ class KtorRealtimeMessagingClientImpl   (private val client: HttpClient):Realtim
             session = client.webSocketSession {
                 url("ws://192.168.1.105:8080/play")
             }
-            val gameStates = session!!.incoming.consumeAsFlow().filterIsInstance<Frame.Text>().mapNotNull { Json.decodeFromString<GameState>(it.readText()) }
+            val gameStates = session!!
+                .incoming
+                .consumeAsFlow()
+                .filterIsInstance<Frame.Text>()
+                .mapNotNull { Json.decodeFromString<GameState>(it.readText()) }
+
             emitAll(gameStates)
         }
     }

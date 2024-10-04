@@ -108,7 +108,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    if(isConnecting) {
+                    if(isConnecting==1) {
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
